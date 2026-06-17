@@ -13,6 +13,16 @@
     --link-hover-color: #405946;        /* 链接悬浮颜色 */
     --code-bg-color: #F0F5F3;           /* 代码背景颜色 */
     --code-text-color: #403C3C;         /* 代码文字颜色 */
+    --code-border-color: rgba(80, 105, 86, 0.18);
+    --code-shadow-color: rgba(64, 60, 60, 0.10);
+    --code-dot-red: #C9837C;
+    --code-dot-yellow: #D8B86F;
+    --code-dot-green: #83B08A;
+    --code-token-keyword: #9B6F99;
+    --code-token-string: #5F8F68;
+    --code-token-number: #B47D63;
+    --code-token-blue: #5E7FA1;
+    --code-muted-rgb: 120, 125, 130;
     --blockquote-bg-color: #EEF4EF;     /* 引用背景颜色 */
     --blockquote-border-color: #7A5F52; /* 引用边框颜色 */
     --table-border-color: #7ea388;      /* 表格边框颜色 */
@@ -40,13 +50,13 @@
 /* 1. JetBrains Mono NL（无连字等宽英文） */
 @font-face {
     font-family: 'JetBrains Mono NL';
-    src: url('./morandigarden/JetBrainsMonoNL-Regular.ttf') format('truetype');
+    src: url('./morandigargen-remix/JetBrainsMonoNL-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: 'JetBrains Mono NL';
-    src: url('./morandigarden/JetBrainsMono-Bold.ttf') format('truetype');
+    src: url('./morandigargen-remix/JetBrainsMono-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
 }
@@ -54,13 +64,13 @@
 /* 2. 阿里巴巴普惠体（等宽中文） */
 @font-face {
     font-family: 'PuHuiTi';
-    src: url('./morandigarden/AlibabaPuHuiTi-3-65-Medium.ttf') format('truetype');
+    src: url('./morandigargen-remix/AlibabaPuHuiTi-3-65-Medium.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
 @font-face {
     font-family: 'PuHuiTi';
-    src: url('./morandigarden/AlibabaPuHuiTi-3-105-Heavy.ttf') format('truetype');
+    src: url('./morandigargen-remix/AlibabaPuHuiTi-3-105-Heavy.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
 }
@@ -166,204 +176,230 @@ a:hover {
     color: var(--h3-color);
 }
 
-/* 代码块头部样式 */
-.md-fences:not([lang="mermaid"])::before {
-    content: attr(lang); /* 显示代码语言 */
-    font-family: var(--font-main);
-    text-align: center;
-    padding-right: 15px;
+/* 代码块样式 */
+#write pre.md-fences,
+#write pre[mdtype="fences"],
+#write .md-fences {
+    background: var(--code-bg-color);
+    color: var(--code-text-color);
+    border: 1px solid var(--code-border-color);
+    border-radius: 16px;
+    box-shadow: 0 18px 50px var(--code-shadow-color);
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin: 2em 0;
+    overflow: auto;
+    padding: 3.2em 1.4em 1.4em;
+    position: relative;
+}
+
+#write pre.md-fences::before,
+#write pre[mdtype="fences"]::before,
+#write .md-fences::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--code-dot-red);
+    box-shadow: 18px 0 0 var(--code-dot-yellow), 36px 0 0 var(--code-dot-green);
+    z-index: 2;
+}
+
+#write pre.md-fences code,
+#write pre[mdtype="fences"] code,
+#write .md-fences code {
+    background: transparent;
+    color: var(--code-text-color);
+    font-weight: normal;
+    padding: 0;
+}
+
+#write pre.md-fences .CodeMirror,
+#write pre.md-fences .CodeMirror-scroll,
+#write pre.md-fences .CodeMirror-gutters,
+#write pre[mdtype="fences"] .CodeMirror,
+#write pre[mdtype="fences"] .CodeMirror-scroll,
+#write pre[mdtype="fences"] .CodeMirror-gutters,
+#write .md-fences .CodeMirror,
+#write .md-fences .CodeMirror-scroll,
+#write .md-fences .CodeMirror-gutters {
+    background: transparent;
+    color: var(--code-text-color);
+}
+
+#write pre.md-fences .CodeMirror-gutters,
+#write pre[mdtype="fences"] .CodeMirror-gutters,
+#write .md-fences .CodeMirror-gutters {
+    border-right: 1px solid rgba(184, 180, 172, 0.3);
+    white-space: nowrap;
+}
+
+#write pre.md-fences .CodeMirror-scroll,
+#write pre[mdtype="fences"] .CodeMirror-scroll,
+#write .md-fences .CodeMirror-scroll {
+    overflow: visible !important;
+}
+
+#write pre.md-fences .CodeMirror-linenumber,
+#write pre[mdtype="fences"] .CodeMirror-linenumber,
+#write .md-fences .CodeMirror-linenumber {
     color: var(--md-char-color);
-    display: block;
-    height: 30px;
-    width: 100%;
-    background-size: 40px;
-    border-radius: 20px; /* 顶部圆角 */
-    background: var(--code-bg-color)
+    padding: 0 3px 0 5px;
+    text-align: right;
 }
 
-/* CodeMirror 编辑器样式 */
-.CodeMirror-wrap .CodeMirror-scroll {
-    overflow-x: auto; /* 支持水平滚动 */
+#write pre.md-fences .CodeMirror-cursor,
+#write pre[mdtype="fences"] .CodeMirror-cursor,
+#write .md-fences .CodeMirror-cursor {
+    border-left: 2px solid var(--h2-color);
 }
 
-.md-fences .cm-s-inner.CodeMirror {
-    margin-top: -0.5rem; /* 调整与头部的间距 */
+#write pre.md-fences pre,
+#write pre.md-fences pre code,
+#write pre.md-fences .cm-s-inner .CodeMirror-lines,
+#write pre[mdtype="fences"] pre,
+#write pre[mdtype="fences"] pre code,
+#write pre[mdtype="fences"] .cm-s-inner .CodeMirror-lines,
+#write .md-fences pre,
+#write .md-fences pre code,
+#write .md-fences .cm-s-inner .CodeMirror-lines {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
 }
 
-.cm-s-inner.CodeMirror {
-    padding: 1.2rem 0.8rem; /* 内边距 */
-    color: var(--code-text-color); /* 代码文字颜色 */
-    font-family: var(--font-mono); /* 使用等宽字体 */
-    border-radius: 10px; /* 圆角 */
-    background-color: var(--code-bg-color); /* 背景颜色 */
-    line-height: 1.6rem; /* 行高 */
+#write pre.md-fences pre,
+#write pre[mdtype="fences"] pre,
+#write .md-fences pre {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.CodeMirror-gutters {
-    border-right: 1px solid rgba(184, 180, 172, 0.3); /* 行号区域右侧边框 */
-    background: inherit; /* 继承背景颜色 */
-    white-space: nowrap; /* 不换行 */
+#write pre.md-fences .CodeMirror-line,
+#write pre[mdtype="fences"] .CodeMirror-line,
+#write .md-fences .CodeMirror-line {
+    padding: 0 1.2rem;
 }
 
-pre.CodeMirror-line {
-    padding: 0 1.2rem; /* 行内边距 */
-}
-
-.CodeMirror-linenumber {
-    padding: 0 3px 0 5px; /* 行号内边距 */
-    text-align: right; /* 行号右对齐 */
-    color: var(--md-char-color); /* 行号颜色 */
-}
-
-.cm-s-inner.CodeMirror {
-    background: var(--code-bg-color); /* 背景颜色 */
-    border-radius: 0 0 5px 5px; /* 底部圆角 */
-    padding: 20px 10px 20px 10px; /* 内边距 */
-    page-break-before: auto; /* 自动分页 */
-    line-height: 1.8rem; /* 行高 */
-}
-
-/* 关键字 */
-.cm-keyword {
-    color: #D33682 !important;
-    font-weight: 700 !important;
-}
-
-/* 变量 */
-.cm-variable {
-    color: #586E75 !important;
-}
-
-/* 类名/抽象类/匿名类 */
-.cm-type {
-    color: #2AA198 !important;
-}
-.cm-type.cm-class {
-    font-weight: 700 !important;
-    text-decoration: underline !important;
-    text-decoration-color: #2AA198 !important;
-}
-
-/* 接口/枚举名 */
-.cm-type.cm-interface,
-.cm-type.cm-enum {
-    font-weight: normal !important;
-    text-decoration: none !important;
-}
-
-/* 参数/类型参数 */
-.cm-variable-2,
-.cm-variable-3 {
-    color: #839496 !important;
-}
-
-/* 静态字段 */
-.cm-property.cm-static {
-    color: #859900 !important;
-    font-style: italic !important;
-}
-
-/* 实例字段 */
-.cm-property {
-    color: #859900 !important;
-}
-
-/* 注释 */
-.cm-comment,
+#write pre.md-fences .cm-s-inner .cm-comment,
+#write pre[mdtype="fences"] .cm-s-inner .cm-comment,
+#write .md-fences .cm-s-inner .cm-comment,
 .md-comment {
-    color: #93A1A1 !important;
+    color: rgba(var(--code-muted-rgb), 0.55) !important;
     font-style: italic !important;
 }
 
-/* 字符串 */
-.cm-string {
-    color: #DC322F !important;
-    font-variant-ligatures: common-ligatures !important; /* 保留原连字配置 */
+#write pre.md-fences .cm-s-inner .cm-keyword,
+#write pre[mdtype="fences"] .cm-s-inner .cm-keyword,
+#write .md-fences .cm-s-inner .cm-keyword {
+    color: var(--code-token-keyword) !important;
+    font-weight: 700 !important;
 }
 
-/* 有效字符串转义 */
-.cm-string-escape.cm-valid {
-    color: #6C71C4 !important;
+#write pre.md-fences .cm-s-inner .cm-string,
+#write pre[mdtype="fences"] .cm-s-inner .cm-string,
+#write .md-fences .cm-s-inner .cm-string {
+    color: var(--code-token-string) !important;
+    font-variant-ligatures: common-ligatures !important;
 }
 
-/* 无效字符串转义 */
-.cm-string-escape.cm-invalid {
-    color: #859900 !important;
-    text-decoration: underline !important;
-    text-decoration-color: #859900 !important;
+#write pre.md-fences .cm-s-inner .cm-number,
+#write pre[mdtype="fences"] .cm-s-inner .cm-number,
+#write .md-fences .cm-s-inner .cm-number {
+    color: var(--code-token-number) !important;
 }
 
-/* 数字 */
-.cm-number {
-    color: #6C71C4 !important;
+#write pre.md-fences .cm-s-inner .cm-def,
+#write pre[mdtype="fences"] .cm-s-inner .cm-def,
+#write .md-fences .cm-s-inner .cm-def,
+#write pre.md-fences .cm-s-inner .cm-property,
+#write pre[mdtype="fences"] .cm-s-inner .cm-property,
+#write .md-fences .cm-s-inner .cm-property,
+#write pre.md-fences .cm-s-inner .cm-type,
+#write pre[mdtype="fences"] .cm-s-inner .cm-type,
+#write .md-fences .cm-s-inner .cm-type,
+#write pre.md-fences .cm-s-inner .cm-builtin,
+#write pre[mdtype="fences"] .cm-s-inner .cm-builtin,
+#write .md-fences .cm-s-inner .cm-builtin {
+    color: var(--code-token-blue) !important;
 }
 
-/* 常量 */
-.cm-constant {
-    color: #859900 !important;
-    font-style: italic !important;
+#write pre.md-fences .cm-s-inner .cm-variable,
+#write pre[mdtype="fences"] .cm-s-inner .cm-variable,
+#write .md-fences .cm-s-inner .cm-variable,
+#write pre.md-fences .cm-s-inner .cm-operator,
+#write pre[mdtype="fences"] .cm-s-inner .cm-operator,
+#write .md-fences .cm-s-inner .cm-operator,
+#write pre.md-fences .cm-s-inner .cm-bracket,
+#write pre[mdtype="fences"] .cm-s-inner .cm-bracket,
+#write .md-fences .cm-s-inner .cm-bracket {
+    color: var(--code-text-color) !important;
 }
 
-/* 操作符/标点（括号/逗号/点/分号） */
-.cm-operator,
-.cm-bracket,
-.cm-semicolon,
-.cm-comma,
-.cm-dot,
-.cm-parenths,
-.cm-braces {
-    color: #586E75 !important;
-}
-
-/* 静态方法 */
-.cm-def.cm-static {
-    color: #CB4B16 !important;
-    font-style: italic !important;
-}
-
-/* 实例方法/方法声明 */
-.cm-def {
-    color: #859900 !important;
-}
-
-/* 元数据/注解 */
-.cm-meta,
+#write pre.md-fences .cm-s-inner .cm-meta,
+#write pre[mdtype="fences"] .cm-s-inner .cm-meta,
+#write .md-fences .cm-s-inner .cm-meta,
 .md-meta {
-    color: #CB4B16 !important;
+    color: var(--code-token-number) !important;
     font-style: italic !important;
 }
 
-/* 标签 */
-.cm-tag {
-    color: #586E75 !important;
-}
-.cm-tag:not(.cm-bracket) {
-    font-weight: normal !important; /* XML中标签无粗体，还原默认 */
+#write pre.md-fences .code-tooltip,
+#write pre[mdtype="fences"] .code-tooltip,
+#write .md-fences .code-tooltip,
+#write [mdtype="fences"] .code-tooltip {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    bottom: auto;
+    left: auto;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(-2px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    pointer-events: none;
+    float: none !important;
+    padding: 0;
+    min-width: 0;
+    height: auto;
+    background: transparent;
+    box-shadow: none;
 }
 
-/* 内置函数/预定义符号 */
-.cm-builtin {
-    color: #2AA198 !important;
+#write pre.md-fences:hover .code-tooltip,
+#write pre[mdtype="fences"]:hover .code-tooltip,
+#write .md-fences:hover .code-tooltip,
+#write [mdtype="fences"]:hover .code-tooltip,
+#write pre.md-fences:focus-within .code-tooltip,
+#write pre[mdtype="fences"]:focus-within .code-tooltip,
+#write .md-fences:focus-within .code-tooltip,
+#write [mdtype="fences"]:focus-within .code-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
-/* 属性 */
-.cm-attribute {
-    color: #839496 !important;
-}
-
-/* 文档注释标签/标记 */
-.cm-comment.cm-doc-tag,
-.cm-comment.cm-doc-markup {
-    color: #CB4B16 !important;
-    font-style: italic !important;
-}
-
-/* 废弃属性/错误字符 */
-.cm-deprecated,
-.cm-bad-character {
-    color: #859900 !important;
-    text-decoration: underline !important;
-    text-decoration-color: #859900 !important;
+#write pre.md-fences .code-tooltip-content,
+#write pre[mdtype="fences"] .code-tooltip-content,
+#write .md-fences .code-tooltip-content,
+#write [mdtype="fences"] .code-tooltip-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--code-border-color);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--code-text-color);
+    line-height: 1;
+    font-family: var(--font-mono);
 }
 
 /* 链接样式 + 悬浮变色 */
